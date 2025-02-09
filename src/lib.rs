@@ -8,13 +8,23 @@ pub fn horizline() -> String {
 type CynthiaStyledString = String;
 
 pub trait CynthiaStyles {
+    /// Display the string with a bold effect.
     fn style_bold(self) -> CynthiaStyledString;
+    /// Display the string with an italic effect.
     fn style_italic(self) -> CynthiaStyledString;
+    /// Display the string with an underline effect.
     fn style_underline(self) -> CynthiaStyledString;
+    /// Display the string with a strikethrough effect.
     fn style_strikethrough(self) -> CynthiaStyledString;
+    /// Display the string with a dim effect.
     fn style_dim(self) -> CynthiaStyledString;
+    /// Display the string with a blinking effect.
     fn style_blink(self) -> CynthiaStyledString;
+    /// Invert the colors of the string.
     fn style_reverse(self) -> CynthiaStyledString;
+    /// Attempts to center the string in the terminal. This requires a new line.
+    fn style_centered(self) -> CynthiaStyledString;
+    /// Clears all styles.
     fn style_clear(self) -> CynthiaStyledString;
 }
 impl CynthiaStyles for &str {
@@ -50,6 +60,13 @@ impl CynthiaStyles for &str {
     fn style_clear(self) -> CynthiaStyledString {
         format!("\u{001b}[0m{}\u{001b}[0m", self)
     }
+    #[inline]
+    fn style_centered(self) -> CynthiaStyledString {
+        let cols = termsize::get().unwrap().cols as usize;
+        let len = self.chars().filter(|c| c.is_alphanumeric()).count();
+        let spaces = (cols - len) / 3;
+        format!("{0}{1}{0}", " ".repeat(spaces), self)
+    }
 }
 impl CynthiaStyles for String {
     #[inline]
@@ -83,6 +100,13 @@ impl CynthiaStyles for String {
     #[inline]
     fn style_clear(self) -> CynthiaStyledString {
         format!("\u{001b}[0m{}\u{001b}[0m", self)
+    }
+    #[inline]
+    fn style_centered(self) -> CynthiaStyledString {
+        let cols = termsize::get().unwrap().cols as usize;
+        let len = self.chars().filter(|c| c.is_alphanumeric()).count();
+        let spaces = (cols - len) / 2;
+        format!("{0}{1}{0}", " ".repeat(spaces), self)
     }
 }
 type CynthiaColoredString = String;
