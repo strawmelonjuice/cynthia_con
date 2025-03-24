@@ -63,9 +63,7 @@ impl CynthiaStyles for &str {
     #[inline]
     fn style_centered(self) -> CynthiaStyledString {
         let cols = termsize::get().unwrap().cols as usize;
-        let len = self.chars().filter(|c| c.is_alphanumeric()).count();
-        let spaces = (cols - len) / 3;
-        format!("{0}{1}{0}", " ".repeat(spaces), self)
+        format!("{: ^cols$}", self)
     }
 }
 impl CynthiaStyles for String {
@@ -104,9 +102,7 @@ impl CynthiaStyles for String {
     #[inline]
     fn style_centered(self) -> CynthiaStyledString {
         let cols = termsize::get().unwrap().cols as usize;
-        let len = self.chars().filter(|c| c.is_alphanumeric()).count();
-        let spaces = (cols - len) / 2;
-        format!("{0}{1}{0}", " ".repeat(spaces), self)
+        format!("{: ^cols$}", self)
     }
 }
 type CynthiaColoredString = String;
