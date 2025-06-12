@@ -2,7 +2,11 @@ use std::env;
 
 pub fn horizline() -> String {
     "\u{2500}"
-        .repeat(termsize::get().unwrap().cols as usize)
+        .repeat(
+            termsize::get()
+                .unwrap_or(termsize::Size { rows: 0, cols: 600 })
+                .cols as usize,
+        )
         .to_string()
 }
 type CynthiaStyledString = String;
@@ -62,7 +66,9 @@ impl CynthiaStyles for &str {
     }
     #[inline]
     fn style_centered(self) -> CynthiaStyledString {
-        let cols = termsize::get().unwrap().cols as usize;
+        let cols = termsize::get()
+            .unwrap_or(termsize::Size { rows: 0, cols: 600 })
+            .cols as usize;
         format!("{: ^cols$}", self)
     }
 }
@@ -101,7 +107,9 @@ impl CynthiaStyles for String {
     }
     #[inline]
     fn style_centered(self) -> CynthiaStyledString {
-        let cols = termsize::get().unwrap().cols as usize;
+        let cols = termsize::get()
+            .unwrap_or(termsize::Size { rows: 0, cols: 600 })
+            .cols as usize;
         format!("{: ^cols$}", self)
     }
 }
