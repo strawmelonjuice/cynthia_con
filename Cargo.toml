@@ -1,7 +1,7 @@
 [package]
 name = "cynthia_con"
 description = "A small output colorising/styling library originally created for the Cynthia project."
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 repository = "https://github.com/strawmelonjuice/cynthia_con"
 license = "MIT"

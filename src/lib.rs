@@ -1,13 +1,16 @@
 use std::env;
 
+fn termsize_get() -> termsize::Size {
+    let default_cols = 35;
+    let default_rows = 0;
+    termsize::get().unwrap_or(termsize::Size {
+        rows: default_rows,
+        cols: default_cols,
+    })
+}
+
 pub fn horizline() -> String {
-    "\u{2500}"
-        .repeat(
-            termsize::get()
-                .unwrap_or(termsize::Size { rows: 0, cols: 600 })
-                .cols as usize,
-        )
-        .to_string()
+    "\u{2500}".repeat(termsize_get().cols as usize).to_string()
 }
 type CynthiaStyledString = String;
 
@@ -66,9 +69,7 @@ impl CynthiaStyles for &str {
     }
     #[inline]
     fn style_centered(self) -> CynthiaStyledString {
-        let cols = termsize::get()
-            .unwrap_or(termsize::Size { rows: 0, cols: 600 })
-            .cols as usize;
+        let cols = termsize_get().cols as usize;
         format!("{: ^cols$}", self)
     }
 }
